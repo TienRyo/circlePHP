@@ -19,7 +19,7 @@ jobs:
       - restore_cache:
           keys: server-dependencies-cache-{{ checksum "composer.json" }}
 
-      - run: php composer.phar install --prefer-dist
+      - run: composer install -n --prefer-dist
 
       - save_cache:
           paths:
