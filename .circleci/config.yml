@@ -3,8 +3,29 @@ jobs :
   build :
     docker:
       - image : bitnami/php-fpm:7.2
-    steps :
-      - checkout
-      - run:
-        name: Test Server
-        command: php vendor/bin/phpunit
+     working_directory: ~/repo
+
+        steps:
+          - checkout
+
+          # Download and cache dependencies
+          - restore_cache:
+              keys:
+              - v1-dependencies-{{ checksum "composer.json" }}
+              # fallback to using the latest cache if no exact match is found
+              - v1-dependencies-
+
+          - run: composer install -n --prefer-dist
+
+          - save_cache:
+              paths:
+                - ./vendor
+              key: v1-dependencies-{{ checksum "composer.json" }}
+
+          # run tests!
+          - run: phpunit
+
+    working_directory: ~/repo steps: - checkout # Download and cache dependencies - resto
+    VIETNAMESE
+    working_directory: ~ / repo     bước:       - kiểm tra       # Tải xuống và bộ nhớ cache phụ thuộc       - resto
+    EXTENSION OPTIONSMORE »
