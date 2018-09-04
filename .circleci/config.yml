@@ -2,28 +2,33 @@ version : 2
 jobs :
   build :
     docker:
-      - image : bitnami/php-fpm:7.2
-    working_directory: ~/repo
-    steps:
-      - checkout
-          # Download and cache dependencies
-      - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "composer.json" }}
-              # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
+          - image: bitnami/php-fpm:7.2
+        working_directory: ~/circle
+        steps:
+          - checkout
+          - restore_cache:
+              key: server-dependencies-cache-{{ checksum "./composer.json" }}
+          - run:
+              name: Build Server
+              command: php composer.phar install --prefer-dist
+          - save_cache:
+              key: server-dependencies-cache-{{ checksum "./composer.json" }}
+              paths:
+                - ./server/vendor
+          - run:
+              name: Test Server
+              command: php vendor/bin/phpunit
+    #      - run:
+    #          name: Test Migration Up
+    #          command: cd server && php artisan migrate --database=migration-test
+    #      - run:
+    #          name: Test Migration Down
+    #          command: cd server && php artisan migrate:rollback --database=migration-test
+          - run:
+              name: Bump build number
+              command: touch .env && echo "APP_BUILD_NUMBER=$CIRCLE_BUILD_NUM" >> .env && echo "APP_BUILD_TIMESTAMP=$(date +%s)" >> .env
+          - persist_to_workspace:
+              root: .
+              paths:
+                - server
 
-      - run: composer install -n --prefer-dist
-
-      - save_cache:
-        paths:
-          - ./vendor
-        key: v1-dependencies-{{ checksum "composer.json" }}
-
-          # run tests!
-      - run: phpunit
-
-    working_directory: ~/repo steps: - checkout # Download and cache dependencies - resto
-    VIETNAMESE
-    working_directory: ~ / repo     bước:       - kiểm tra       # Tải xuống và bộ nhớ cache phụ thuộc       - resto
-    EXTENSION OPTIONSMORE »
