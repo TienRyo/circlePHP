@@ -3,11 +3,9 @@ jobs :
   build :
     docker:
       - image : bitnami/php-fpm:7.2
-     working_directory: ~/repo
-
+      working_directory: ~/repo
         steps:
           - checkout
-
           # Download and cache dependencies
           - restore_cache:
               keys:
@@ -25,7 +23,7 @@ jobs :
           # run tests!
           - run: phpunit
 
-    working_directory: ~/repo steps: - checkout # Download and cache dependencies - resto
-    VIETNAMESE
-    working_directory: ~ / repo     bước:       - kiểm tra       # Tải xuống và bộ nhớ cache phụ thuộc       - resto
-    EXTENSION OPTIONSMORE »
+      working_directory: ~/repo steps: - checkout # Download and cache dependencies - resto
+      VIETNAMESE
+      working_directory: ~ / repo     bước:       - kiểm tra       # Tải xuống và bộ nhớ cache phụ thuộc       - resto
+      EXTENSION OPTIONSMORE »
