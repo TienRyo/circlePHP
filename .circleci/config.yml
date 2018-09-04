@@ -2,36 +2,23 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: bitnami/php-fpm:7.2
+      - image: circleci/php:7.1.5-browsers
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
-
-    working_directory: ~/circle
+    working_directory: ~/repo
 
     steps:
       - checkout
 
-      # Download and cache dependencies
       - restore_cache:
-          keys: server-dependencies-cache-{{ checksum "composer.json" }}
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          - v1-dependencies-
 
       - run: composer install -n --prefer-dist
 
       - save_cache:
           paths:
             - ./vendor
-          key: server-dependencies-cache-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "composer.json" }}
 
-      # run tests!
-      - run: php vendor/bin/phpunit
-      - run:
-          name: Bump build number
-          command: touch .env && echo "APP_BUILD_NUMBER=$CIRCLE_BUILD_NUM" >> .env && echo "APP_BUILD_TIMESTAMP=$(date +%s)" >> .env
-      - persist_to_workspace:
-          root: .
-          paths:
-            - server
+      - run: phpunit
