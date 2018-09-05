@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/course', 'CourseController@index');
-
-Route::post('/course', 'CourseController@create');
+//Route::get('/course', 'CourseController@index');
+//
+//Route::post('/course', 'CourseController@create');
