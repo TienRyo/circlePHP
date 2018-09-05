@@ -3,16 +3,22 @@ jobs:
   build:
     docker:
       - image: bitnami/php-fpm:7.2
+
     working_directory: ~/circlePHP
+
     steps:
       - checkout
+
       - restore_cache:
-          key: server-dependencies-cache-{{ checksum "composer.json" }}
-      - run:
-          name: Build Server
-          command: php composer.phar install --prefer-dist
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          - v1-dependencies-
+
+      - run: composer install -n --prefer-dist
+
       - save_cache:
-          key: server-dependencies-cache-{{ checksum "composer.json" }}
-      - run:
-          name: Test Server
-          command: php vendor/bin/phpunit
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      - run: php vendor/bin/phpunit
