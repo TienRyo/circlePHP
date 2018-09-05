@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-server:
+  build:
     docker:
       - image: bitnami/php-fpm:7.2
     working_directory: ~/circlePHP
